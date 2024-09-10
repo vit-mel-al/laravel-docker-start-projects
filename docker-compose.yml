@@ -1,0 +1,42 @@
+services:
+  nginx:
+    image: nginx:1.27.1
+    volumes:
+      - ./${PROJECT}:/var/www
+      - ./_docker/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - ${NGINX_PORT}:80
+    depends_on:
+      - app
+    container_name: ${PROJECT}-nginx
+
+  app:
+    build:
+      context: .
+      dockerfile: _docker/app/Dockerfile
+    volumes:
+      - ./${PROJECT}:/var/www
+    depends_on:
+      - db
+    container_name: ${PROJECT}-app
+
+  db:
+    image: postgres:16.4
+    restart: always
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - ./tmp/pgdata:/var/lib/postgresql/data
+    container_name: ${PROJECT}-db
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - ${DB_ADMINER_PORT}:8080
+    container_name: ${PROJECT}-adminer

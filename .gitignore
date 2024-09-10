@@ -1,0 +1,6 @@
+.idea
+tmp
+MyTestProject
+env
+*.sql.gz
+*.sql
