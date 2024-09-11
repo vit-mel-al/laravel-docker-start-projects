@@ -7,17 +7,8 @@ pull:
 start:
 	docker compose up --build
 
-up:
-	sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
-	#sudo service apache2 stop
-	systemctl --user start docker-desktop
-	mkdir -p ./tmp/pgdata
-	sudo chmod -R 777 ./tmp/pgdata
-	sleep 5s
+up: prepare-dir
 	docker compose up --build -d
-	#sleep 15s
-	sudo chmod -R 777 ./$(PROJECT)
-	sudo chown -R $(USER_ID):$(GROUP_ID) ./$(PROJECT)
 
 down:
 	docker compose down
@@ -25,11 +16,26 @@ down:
 list:
 	docker compose ps
 
+nginx-log:
+	docker logs -f --details $(PROJECT)-nginx
+
+db-log:
+	docker logs -f --details $(PROJECT)-db
+
 app-log:
-	docker logs -f --details $(PROJECT)-web
+	docker logs -f --details $(PROJECT)-app
 
 bash:
 	docker exec -it $(PROJECT)-app bash
 
 install-laravel:
 	composer create-project laravel/laravel $(PROJECT)
+
+prepare-dir:
+	mkdir -p ./tmp/pgdata
+	sudo chmod -R 777 ./tmp/pgdata
+	sudo chmod -R 777 ./$(PROJECT)
+	sudo chown -R $(USER_ID):$(GROUP_ID) ./$(PROJECT)
+
+create-project: install-laravel pull prepare-dir start
+	# next go to bash and execute command "cd .. && php artisan migrate"
