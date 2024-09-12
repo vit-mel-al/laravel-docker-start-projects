@@ -3,5 +3,6 @@ tmp
 MyTestProject
 OceanLaravelLessons
 env
+.env
 *.sql.gz
 *.sql
