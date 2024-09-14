@@ -7,7 +7,8 @@ pull:
 start:
 	docker compose up --build
 
-up: prepare-dir
+up:	prepare-dir
+	sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 && systemctl --user start docker-desktop && sleep 5s # ubuntu desktop 24.04
 	docker compose up --build -d
 
 down:
