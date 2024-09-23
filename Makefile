@@ -10,6 +10,7 @@ start:
 up:	prepare-dir
 	sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 && systemctl --user start docker-desktop && sleep 5s # ubuntu desktop 24.04
 	docker compose up --build -d
+	sleep 5s && sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=1 # ubuntu desktop 24.04 
 
 down:
 	docker compose down
