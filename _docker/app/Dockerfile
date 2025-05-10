@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
       mc \
       cron \
       nano \
+      npm \
       curl && \
       docker-php-ext-install pdo pdo_pgsql pgsql && \
       docker-php-ext-install bcmath && \
