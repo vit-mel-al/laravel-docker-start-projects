@@ -27,8 +27,14 @@ db-log:
 app-log:
 	docker logs -f --details $(PROJECT)-app
 
-bash:
+bash-app:
 	docker exec -it $(PROJECT)-app bash
+
+bash-nginx:
+	docker exec -it $(PROJECT)-nginx bash
+
+bash-db:
+	docker exec -it $(PROJECT)-db bash
 
 install-laravel:
 	composer create-project laravel/laravel $(PROJECT)
