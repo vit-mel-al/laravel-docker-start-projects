@@ -41,9 +41,11 @@ install-laravel:
 
 prepare-dir:
 	mkdir -p ./tmp/pgdata
-	sudo chmod -R 777 ./tmp/pgdata
-	sudo chmod -R 777 ./$(PROJECT)
+	sudo chmod -R 0755 ./tmp/pgdata
+	sudo chmod -R 0755 ./$(PROJECT)
+	sudo chmod -R 0777 ./$(PROJECT)/storage/app/public
 	sudo chown -R $(USER_ID):$(GROUP_ID) ./$(PROJECT)
+	sudo find ./$(PROJECT) -type f | xargs chmod 0664
 
 create-project: install-laravel pull prepare-dir start
 	# next go to bash and execute command "cd .. && php artisan migrate"
