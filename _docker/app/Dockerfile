@@ -34,5 +34,4 @@ RUN touch /var/log/cron.log
 #CMD cron && tail -f /var/log/cron.log
 EXPOSE 9000
 CMD bash -c "cron && service supervisor start && php-fpm"
-# CMD bash -c "service supervisor stop && service supervisor start"
 
